@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rakour Studio | راكور ستوديو</title>
+<meta name="description" content="راكور ستوديو في الإسكندرية: ريلز، سيشن تصوير، بودكاست، دراما، منتجات، مونتاج ولوكيشن تصوير.">
+<meta name="theme-color" content="#06223F">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #06223F;
+    --yellow: #FFDE59;
+    --bg: #06223F;
+    --ink: #FFFFFF;
+    --ink-2: rgba(255, 255, 255, .72);
+    --glass: rgba(255, 255, 255, .08);
+    --glass-line: rgba(255, 255, 255, .18);
+    --hair: rgba(255, 255, 255, .12);
+    --r-lg: 28px;
+    --r-md: 20px;
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 120px; }
+  html, body { margin: 0; overflow-x: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Cairo', 'Inter', -apple-system, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  html[lang="en"] body { font-family: 'Inter', 'Cairo', -apple-system, system-ui, sans-serif; letter-spacing: -.01em; }
+  a { color: inherit; text-decoration: none; }
+  img, video { display: block; max-width: 100%; }
+  .wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+
+  /* ---------- Blurred background ---------- */
+  .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .bg span { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; animation: drift 22s ease-in-out infinite alternate; }
+  .bg .o1 { width: 52vmax; height: 52vmax; background: var(--yellow); top: -18vmax; inset-inline-start: -12vmax; opacity: .45; }
+  .bg .o2 { width: 46vmax; height: 46vmax; background: #9fb8d6; bottom: -16vmax; inset-inline-end: -14vmax; animation-delay: -6s; }
+  .bg .o3 { width: 30vmax; height: 30vmax; background: var(--navy); top: 40%; inset-inline-start: 35%; opacity: .12; animation-delay: -12s; }
+  @keyframes drift { to { transform: translate(6vmax, 4vmax) scale(1.12); } }
+
+  /* ---------- Glass header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(245, 245, 247, .72);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--hair);
+  }
+  .bar { height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand img { height: 30px; width: auto; }
+  nav.main { display: flex; align-items: center; gap: 22px; font-size: .88rem; }
+  nav.main a { color: var(--ink-2); transition: color .2s; }
+  nav.main a:hover { color: var(--ink); }
+  .lang-btn {
+    font: 600 .8rem 'Inter', sans-serif; color: var(--ink); cursor: pointer;
+    background: var(--glass); border: 1px solid var(--hair); border-radius: 999px; padding: 5px 12px;
+  }
+  .lang-btn:hover { background: var(--yellow); border-color: var(--yellow); }
+  @media (max-width: 720px) { nav.main a { display: none; } }
+
+  /* Section sub-nav (chips) */
+  .subnav {
+    position: sticky; top: 52px; z-index: 40;
+    background: rgba(245, 245, 247, .6);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--hair);
+  }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chips a {
+    flex: none; font-size: .85rem; font-weight: 600; padding: 6px 14px; border-radius: 999px;
+    color: var(--ink-2); background: rgba(255,255,255,.55); border: 1px solid var(--hair);
+    transition: background .2s, color .2s;
+  }
+  .chips a:hover, .chips a.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; min-height: 88vh; display: grid; place-items: center; text-align: center; overflow: hidden; padding: 64px 0 80px; }
+  .hero { overflow: visible; }
+  .hero-video {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    filter: blur(38px) saturate(140%); opacity: .5; transform: scale(1.15);
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 98%); mask-image: linear-gradient(180deg, #000 55%, transparent 98%);
+  }
+  .hero::after { content: ""; position: absolute; inset: 0; background: rgba(245,245,247,.35); -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 98%); mask-image: linear-gradient(180deg, #000 55%, transparent 98%); pointer-events: none; }
+  main { overflow-x: clip; }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-logo { width: min(520px, 82vw); margin: 0 auto 28px; animation: floaty 6s ease-in-out infinite; }
+  @keyframes floaty { 50% { transform: translateY(-8px); } }
+  .hero h1 { font-size: clamp(2.6rem, 8vw, 5.6rem); font-weight: 900; line-height: 1.08; margin: 0; letter-spacing: -.02em; }
+  .hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--navy), #2c5d8f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero h1 .dot { color: var(--yellow); -webkit-text-stroke: 0; }
+  .hero p { font-size: clamp(1.05rem, 2.2vw, 1.4rem); color: var(--ink-2); max-width: 640px; margin: 18px auto 32px; font-weight: 500; }
+  .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1rem;
+    padding: 13px 26px; border-radius: 999px; transition: transform .2s var(--ease), box-shadow .2s, background .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn-primary { background: var(--navy); color: #fff; box-shadow: 0 10px 30px rgba(6,34,63,.25); }
+  .btn-yellow { background: var(--yellow); color: var(--navy); box-shadow: 0 10px 30px rgba(255,222,89,.45); }
+  .btn-glass { background: var(--glass); color: var(--ink); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+
+  /* Scroll reveal */
+  .rv { opacity: 0; transform: translateY(32px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+  .rv.in { opacity: 1; transform: none; }
+
+  /* ---------- Feed sections ---------- */
+  #feed { padding-bottom: 40px; }
+  .cat { padding: 72px 0 24px; }
+  .cat-head { margin-bottom: 26px; }
+  .eyebrow { display: inline-block; font-size: .85rem; font-weight: 800; color: var(--navy); background: var(--yellow); padding: 3px 12px; border-radius: 999px; }
+  .cat h2 { font-size: clamp(2rem, 5.4vw, 3.6rem); font-weight: 900; line-height: 1.12; margin: 12px 0 8px; letter-spacing: -.02em; }
+  .cat .lead { font-size: clamp(1rem, 1.8vw, 1.25rem); color: var(--ink-2); margin: 0; max-width: 680px; font-weight: 500; }
+
+  .rail-wrap { position: relative; }
+  .rail {
+    display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 6px 2px 26px; scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .card {
+    position: relative; flex: none; scroll-snap-align: start;
+    width: 270px; aspect-ratio: 9 / 16;
+    border-radius: var(--r-lg); overflow: hidden; background: #dfe3ea;
+    box-shadow: 0 18px 40px rgba(6,34,63,.14);
+    transform: translateZ(0);
+    transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+  }
+  .card.wide { width: 520px; aspect-ratio: 16 / 9; }
+  .card:hover { transform: scale(1.025); box-shadow: 0 26px 60px rgba(6,34,63,.22); }
+  .card video, .card img { width: 100%; height: 100%; object-fit: cover; }
+  .card img { transition: transform 1.2s var(--ease); }
+  .card:hover img { transform: scale(1.07); }
+  .card .cap {
+    position: absolute; inset-inline: 10px; bottom: 10px; padding: 10px 14px;
+    border-radius: 16px; color: var(--ink);
+    background: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.75);
+    -webkit-backdrop-filter: saturate(180%) blur(18px); backdrop-filter: saturate(180%) blur(18px);
+    pointer-events: none;
+  }
+  .card .cap b { display: block; font-size: .98rem; font-weight: 800; line-height: 1.3; }
+  .card .cap small { display: block; font-size: .78rem; color: var(--ink-2); margin-top: 2px; }
+  .card .badge {
+    position: absolute; top: 12px; inset-inline-end: 12px; width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center; pointer-events: none;
+    background: rgba(255,255,255,.6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    transition: opacity .3s;
+  }
+  .card .badge::before { content: ""; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent var(--navy); margin-left: 3px; }
+  .card.playing .badge { opacity: 0; }
+
+  .rail-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: -6px; }
+  .rail-btns button {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--hair); cursor: pointer;
+    background: var(--glass); color: var(--ink); font-size: 1.1rem; line-height: 1;
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  }
+  .rail-btns button:hover { background: var(--navy); color: #fff; }
+  @media (hover: none) { .rail-btns { display: none; } }
+
+  @media (max-width: 600px) {
+    .cat { padding-top: 56px; }
+    .rail { gap: 12px; }
+    .card { width: 62vw; border-radius: 22px; }
+    .card.wide { width: 86vw; }
+  }
+
+  /* ---------- Story band ---------- */
+  .story { padding: 90px 0; text-align: center; }
+  .story p { font-size: clamp(1.6rem, 4.4vw, 3rem); font-weight: 900; line-height: 1.3; margin: 0 auto; max-width: 900px; letter-spacing: -.01em; }
+  .story p span { color: var(--ink-2); }
+  .story p mark { background: linear-gradient(transparent 60%, var(--yellow) 60%); color: inherit; padding: 0 4px; }
+
+  /* ---------- Contact ---------- */
+  #contact { padding: 30px 0 110px; }
+  .contact-card {
+    position: relative; overflow: hidden; text-align: center; color: #fff;
+    border-radius: 36px; padding: clamp(40px, 7vw, 80px) 22px;
+    background: var(--navy);
+    box-shadow: 0 30px 80px rgba(6,34,63,.3);
+  }
+  .contact-card::before {
+    content: ""; position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%;
+    background: var(--yellow); filter: blur(120px); opacity: .28; top: -40%; inset-inline-start: -10%;
+  }
+  .contact-card > * { position: relative; }
+  .contact-card img.mark { width: 84px; margin: 0 auto 18px; }
+  .contact-card h2 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 900; margin: 0 0 10px; line-height: 1.15; }
+  .contact-card p { color: rgba(255,255,255,.75); margin: 0 auto 30px; max-width: 520px; font-size: 1.1rem; }
+  .contact-card .btn-glass { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.25); }
+  .contact-info { margin-top: 26px; display: flex; flex-direction: column; gap: 4px; color: rgba(255,255,255,.8); font-size: .98rem; }
+  .contact-info a:hover { color: var(--yellow); }
+  .social { display: flex; justify-content: center; gap: 12px; margin-top: 26px; }
+  .social a {
+    width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    transition: background .2s, transform .2s;
+  }
+  .social a:hover { background: var(--yellow); transform: translateY(-3px); }
+  .social a:hover svg { fill: var(--navy); }
+  .social svg { width: 22px; height: 22px; fill: #fff; transition: fill .2s; }
+
+  footer { text-align: center; color: var(--ink-2); font-size: .85rem; padding: 0 0 40px; }
+
+  /* Floating WhatsApp button */
+  .fab {
+    position: fixed; bottom: 20px; inset-inline-start: 20px; z-index: 60;
+    width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center;
+    background: #25D366; box-shadow: 0 12px 30px rgba(37,211,102,.45);
+    transition: transform .2s var(--ease);
+  }
+  .fab:hover { transform: scale(1.08); }
+  .fab svg { width: 30px; height: 30px; fill: #fff; }
+
+  /* ---------- Navy theme: navy background, white text, yellow accents ---------- */
+  .bg .o1 { opacity: .16; }
+  .bg .o2 { background: #2c5d8f; opacity: .45; }
+  .bg .o3 { background: #0f3d6b; opacity: .6; }
+  header { background: rgba(6, 34, 63, .72); }
+  .subnav { background: rgba(6, 34, 63, .6); }
+  .lang-btn:hover { color: var(--navy); }
+  .chips a { background: rgba(255, 255, 255, .06); }
+  .chips a:hover, .chips a.active { background: var(--yellow); color: var(--navy); border-color: var(--yellow); }
+  .hero::after { background: rgba(6, 34, 63, .5); }
+  .hero-video { opacity: .55; }
+  .hero h1 em { background: linear-gradient(90deg, var(--yellow), #fff3b8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .btn-primary { background: var(--yellow); color: var(--navy); box-shadow: 0 10px 30px rgba(255, 222, 89, .3); }
+  .card { background: #0b2f55; box-shadow: 0 18px 40px rgba(0, 0, 0, .35); border: 1px solid var(--hair); }
+  .card:hover { box-shadow: 0 26px 60px rgba(0, 0, 0, .45); border-color: rgba(255, 222, 89, .6); }
+  .card .cap { color: #fff; background: rgba(6, 34, 63, .55); border-color: rgba(255, 255, 255, .16); }
+  .card .cap small { color: rgba(255, 255, 255, .72); }
+  .card .badge { background: rgba(6, 34, 63, .55); }
+  .card .badge::before { border-color: transparent transparent transparent var(--yellow); }
+  .rail-btns button:hover { background: var(--yellow); color: var(--navy); border-color: var(--yellow); }
+  .story p mark { background: none; color: var(--yellow); padding: 0; }
+  .contact-card { background: rgba(255, 255, 255, .06); border: 1px solid var(--hair); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 30px 80px rgba(0, 0, 0, .35); }
+
+  /* ---------- About ---------- */
+  #about { padding: 90px 0 40px; scroll-margin-top: 110px; }
+  .about-head { max-width: 860px; }
+  #about h2 { font-size: clamp(2.1rem, 5.6vw, 3.8rem); font-weight: 900; line-height: 1.15; margin: 14px 0 14px; letter-spacing: -.02em; }
+  #about h2 em { font-style: normal; color: var(--yellow); }
+  #about .lead { font-size: clamp(1.05rem, 1.9vw, 1.3rem); color: var(--ink-2); line-height: 1.8; margin: 0; font-weight: 500; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 40px 0 22px; }
+  .stat { padding: 22px; border-radius: 24px; background: var(--glass); border: 1px solid var(--hair); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+  .stat b { display: block; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: var(--yellow); line-height: 1.1; }
+  .stat span { color: var(--ink-2); font-weight: 600; }
+  .about-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .about-card { padding: 26px; border-radius: 24px; background: var(--glass); border: 1px solid var(--hair); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); transition: border-color .3s, transform .3s var(--ease); }
+  .about-card:hover { border-color: rgba(255, 222, 89, .55); transform: translateY(-3px); }
+  .about-card .ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 1.4rem; background: rgba(255, 222, 89, .14); margin-bottom: 12px; }
+  .about-card h3 { margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; }
+  .about-card p { margin: 0; color: var(--ink-2); line-height: 1.75; }
+  @media (max-width: 700px) { .stats, .about-grid { grid-template-columns: 1fr; } }
+
+  /* Photo cards */
+  .card.portrait { width: 300px; aspect-ratio: 4 / 5; }
+  @media (max-width: 600px) { .card.portrait { width: 70vw; } }
+
+  /* Music button + credit */
+  .music-btn {
+    position: fixed; bottom: 20px; inset-inline-end: 20px; z-index: 60; width: 50px; height: 50px; border-radius: 50%;
+    display: grid; place-items: center; cursor: pointer; color: var(--navy);
+    background: var(--yellow); border: 0; box-shadow: 0 10px 26px rgba(0, 0, 0, .35);
+  }
+  .music-btn[hidden] { display: none; }
+  .music-btn svg { width: 24px; height: 24px; fill: currentColor; }
+  .music-btn .on { display: none; }
+  .music-btn.playing .on { display: block; }
+  .music-btn.playing .off { display: none; }
+  .music-btn.playing::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--yellow); animation: pulse 2s ease-out infinite; }
+  @keyframes pulse { from { transform: scale(.9); opacity: .7; } to { transform: scale(1.35); opacity: 0; } }
+  footer .credit { display: block; margin-top: 6px; font-size: .72rem; opacity: .7; }
+  footer .credit a { text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bg span, .hero-logo { animation: none; }
+    .rv { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true"><span class="o1"></span><span class="o2"></span><span class="o3"></span></div>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Rakour Studio"><img src="logo-white.png" alt="Rakour Studio"></a>
+    <nav class="main">
+      <a href="#about" data-ar="مين إحنا" data-en="About">مين إحنا</a>
+      <a href="#reels" data-ar="ريلز" data-en="Reels">ريلز</a>
+      <a href="#session" data-ar="سيشن تصوير" data-en="Sessions">سيشن تصوير</a>
+      <a href="#podcast" data-ar="بودكاست" data-en="Podcast">بودكاست</a>
+      <a href="#contact" data-ar="تواصل" data-en="Contact">تواصل</a>
+      <button class="lang-btn" id="lang-btn" type="button" aria-label="Switch language">EN</button>
+    </nav>
+  </div>
+</header>
+
+<div class="subnav">
+  <div class="wrap chips" id="chips">
+    <a href="#reels" data-ar="ريلز" data-en="Reels">ريلز</a>
+    <a href="#session" data-ar="سيشن تصوير" data-en="Photo sessions">سيشن تصوير</a>
+    <a href="#location" data-ar="لوكيشن" data-en="Locations">لوكيشن</a>
+    <a href="#podcast" data-ar="بودكاست" data-en="Podcast">بودكاست</a>
+    <a href="#drama" data-ar="دراما" data-en="Drama">دراما</a>
+    <a href="#products" data-ar="منتجات" data-en="Products">منتجات</a>
+    <a href="#montage" data-ar="مونتاج" data-en="Editing">مونتاج</a>
+  </div>
+</div>
+
+<main id="top">
+  <!-- Hero: blurred studio footage behind the logo -->
+  <section class="hero">
+    <video class="hero-video" src="media/session-3.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+    <div class="hero-inner wrap">
+      <img class="hero-logo rv" src="logo-white.png" alt="Rakour Studio">
+      <h1 class="rv" data-ar="كل صورة… <em>حكاية</em><span class='dot'>.</span>" data-en="Every frame <em>tells a story</em><span class='dot'>.</span>">كل صورة… <em>حكاية</em><span class='dot'>.</span></h1>
+      <p class="rv" data-ar="من أول ما تجيلك الفكرة، هتلاقينا معاك خطوة بخطوة. ريلز، سيشن، بودكاست، دراما ومونتاج… كله تحت سقف واحد." data-en="From the moment the idea hits you, you'll find us with you every step of the way. Reels, sessions, podcasts, drama and editing, all under one roof.">من أول ما تجيلك الفكرة، هتلاقينا معاك خطوة بخطوة. ريلز، سيشن، بودكاست، دراما ومونتاج… كله تحت سقف واحد.</p>
+      <div class="btns rv">
+        <a class="btn btn-primary" href="#about" data-ar="شوف حكاياتنا" data-en="See our stories">شوف حكاياتنا</a>
+        <a class="btn btn-glass" href="https://wa.me/201551227048" target="_blank" rel="noopener" data-ar="احجز على واتساب" data-en="Book on WhatsApp">احجز على واتساب</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== About ========== -->
+  <section id="about">
+    <div class="wrap">
+      <div class="about-head rv">
+        <span class="eyebrow" data-ar="مين هو راكور؟" data-en="Who is Rakour?">مين هو راكور؟</span>
+        <h2 data-ar="إحنا المكان اللي فكرتك <em>بتشوف فيه النور</em>." data-en="We're where your idea <em>steps into the light</em>.">إحنا المكان اللي فكرتك <em>بتشوف فيه النور</em>.</h2>
+        <p class="lead" data-ar="راكور ستوديو مش مجرد كاميرا وإضاءة. إحنا فريق عايش في الصورة من أكتر من ١٠ سنين، شفنا فيهم مئات الأفكار بتبدأ كجملة صغيرة وبتخلص كشغل الناس بتقف عنده. بنقعد معاك، نفهم إنت عايز تقول إيه، ونحوّله لصورة تتحس قبل ما تتشاف." data-en="Rakour Studio is more than a camera and some lights. We're a team that has lived behind the lens for over 10 years, watching hundreds of ideas start as a single sentence and end as work people stop to watch. We sit with you, understand what you want to say, and turn it into a picture you can feel before you see it.">راكور ستوديو مش مجرد كاميرا وإضاءة. إحنا فريق عايش في الصورة من أكتر من ١٠ سنين، شفنا فيهم مئات الأفكار بتبدأ كجملة صغيرة وبتخلص كشغل الناس بتقف عنده. بنقعد معاك، نفهم إنت عايز تقول إيه، ونحوّله لصورة تتحس قبل ما تتشاف.</p>
+      </div>
+
+      <div class="stats rv">
+        <div class="stat"><b data-ar="+١٠" data-en="10+">+١٠</b><span data-ar="سنين خبرة في التصوير" data-en="years behind the camera">سنين خبرة في التصوير</span></div>
+        <div class="stat"><b data-ar="كل" data-en="Every">كل</b><span data-ar="أنواع التصوير تحت سقف واحد" data-en="kind of shoot, under one roof">أنواع التصوير تحت سقف واحد</span></div>
+        <div class="stat"><b data-ar="١٠٠٪" data-en="100%">١٠٠٪</b><span data-ar="معدات جاهزة… مش هتحتاج تجيب حاجة" data-en="ready gear – bring nothing but your idea">معدات جاهزة… مش هتحتاج تجيب حاجة</span></div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card rv">
+          <div class="ic">🎬</div>
+          <h3 data-ar="بنصوّر كل حاجة" data-en="We shoot it all">بنصوّر كل حاجة</h3>
+          <p data-ar="أحداث ومناسبات، بودكاست، ريلز للسوشيال ميديا، دراما وأفلام قصيرة، سيشن تصوير، وتصوير منتجات. أياً كان نوع الحكاية، عندنا الطريقة اللي تحكيها صح." data-en="Events, podcasts, social media reels, drama and short films, photo sessions and product shoots. Whatever your story is, we know how to tell it right.">أحداث ومناسبات، بودكاست، ريلز للسوشيال ميديا، دراما وأفلام قصيرة، سيشن تصوير، وتصوير منتجات. أياً كان نوع الحكاية، عندنا الطريقة اللي تحكيها صح.</p>
+        </div>
+        <div class="about-card rv">
+          <div class="ic">🚀</div>
+          <h3 data-ar="بنبدأ معاك من الصفر" data-en="We start from zero with you">بنبدأ معاك من الصفر</h3>
+          <p data-ar="لسه بتبدأ مشروعك؟ عندك فكرة ومش عارف تبدأ منين؟ إحنا معاك من أول الفكرة والسكريبت، للتصوير والمونتاج، لحد ما شغلك ينزل وتشوف الناس بتتفاعل معاه." data-en="Just launching your project? Have an idea but not sure where to begin? We're with you from concept and script, through shooting and editing, until your work is live and people are reacting to it.">لسه بتبدأ مشروعك؟ عندك فكرة ومش عارف تبدأ منين؟ إحنا معاك من أول الفكرة والسكريبت، للتصوير والمونتاج، لحد ما شغلك ينزل وتشوف الناس بتتفاعل معاه.</p>
+        </div>
+        <div class="about-card rv">
+          <div class="ic">💡</div>
+          <h3 data-ar="كل المعدات اللي محتاجها" data-en="All the gear you need">كل المعدات اللي محتاجها</h3>
+          <p data-ar="كاميرات وعدسات احترافية، إضاءة استوديو، مايكات وصوت نضيف، ولوكيشنات جاهزة جوه الاستوديو من المطبخ لركن البودكاست. إنت تيجي بفكرتك بس، والباقي علينا." data-en="Professional cameras and lenses, studio lighting, clean audio and mics, and ready-made sets inside the studio, from the kitchen to the podcast corner. Just bring your idea; we'll handle the rest.">كاميرات وعدسات احترافية، إضاءة استوديو، مايكات وصوت نضيف، ولوكيشنات جاهزة جوه الاستوديو من المطبخ لركن البودكاست. إنت تيجي بفكرتك بس، والباقي علينا.</p>
+        </div>
+        <div class="about-card rv">
+          <div class="ic">🤝</div>
+          <h3 data-ar="معاك خطوة بخطوة" data-en="With you every step">معاك خطوة بخطوة</h3>
+          <p data-ar="بنسمعك الأول، نقترح، نخطط، نصوّر، ونراجع معاك لحد ما توصل للنتيجة اللي كنت متخيلها… وأحسن." data-en="We listen first, then suggest, plan, shoot and review with you until you get the result you imagined, and better.">بنسمعك الأول، نقترح، نخطط، نصوّر، ونراجع معاك لحد ما توصل للنتيجة اللي كنت متخيلها… وأحسن.</p>
+        </div>
+      </div>
+
+      <div class="btns rv" style="margin-top:34px">
+        <a class="btn btn-primary" href="#reels" data-ar="شوف شغلنا" data-en="See our work">شوف شغلنا</a>
+        <a class="btn btn-glass" href="https://wa.me/201551227048" target="_blank" rel="noopener" data-ar="يلا نبدأ مشروعك" data-en="Let's start your project">يلا نبدأ مشروعك</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="feed">
+
+    <!-- ========== Reels ========== -->
+    <section class="cat" id="reels">
+      <div class="wrap">
+        <div class="cat-head rv">
+          <span class="eyebrow" data-ar="ريلز" data-en="Reels">ريلز</span>
+          <h2 data-ar="ثواني بتوقّف السكرول." data-en="Seconds that stop the scroll.">ثواني بتوقّف السكرول.</h2>
+          <p class="lead" data-ar="أول ثانية بتقرر كل حاجة. بنكتب الهوك، نصوّر بإيقاع، ونقطع على النبض." data-en="The first second decides everything. We write the hook, shoot with rhythm, and cut on the beat.">أول ثانية بتقرر كل حاجة. بنكتب الهوك، نصوّر بإيقاع، ونقطع على النبض.</p>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail">
+            <article class="card" data-cat="reels" data-src="media/reel-1.mp4"><video muted playsinline loop preload="none" poster="media/posters/reel-1.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="كل ثانية محسوبة" data-en="Every second counts">كل ثانية محسوبة</b></div></article>
+            <article class="card" data-cat="reels" data-src="media/reel-2.mp4"><video muted playsinline loop preload="none" poster="media/posters/reel-2.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="فكرة بتتحول لترند" data-en="An idea becomes a trend">فكرة بتتحول لترند</b></div></article>
+            <article class="card" data-cat="reels" data-src="media/reel-3.mp4"><video muted playsinline loop preload="none" poster="media/posters/reel-3.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="كل رشفة… حكاية" data-en="Every sip tells a story">كل رشفة… حكاية</b></div></article>
+            <article class="card" data-cat="reels" data-src="media/reel-4.mp4"><video muted playsinline loop preload="none" poster="media/posters/reel-4.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="كلام بيوصل" data-en="Words that land">كلام بيوصل</b></div></article>
+            <article class="card" data-cat="reels" data-src="media/reel-5.mp4"><video muted playsinline loop preload="none" poster="media/posters/reel-5.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="تفاصيل بتعمل مزاج" data-en="Details that set the mood">تفاصيل بتعمل مزاج</b></div></article>
+            <article class="card" data-cat="reels" data-src="media/reel-6.mp4"><video muted playsinline loop preload="none" poster="media/posters/reel-6.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="قصة في دقيقة" data-en="A story in a minute">قصة في دقيقة</b></div></article>
+          </div>
+          <div class="rail-btns"><button type="button" data-dir="-1" aria-label="Previous">‹</button><button type="button" data-dir="1" aria-label="Next">›</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Photo sessions ========== -->
+    <section class="cat" id="session">
+      <div class="wrap">
+        <div class="cat-head rv">
+          <span class="eyebrow" data-ar="سيشن تصوير" data-en="Photo sessions">سيشن تصوير</span>
+          <h2 data-ar="لحظات بتستاهل تفضل." data-en="Moments that deserve to stay.">لحظات بتستاهل تفضل.</h2>
+          <p class="lead" data-ar="ضحكة، نظرة، أول حضن… بنمسك اللحظة قبل ما تعدّي، ونرجّعهالك كل ما تبص للصورة." data-en="A laugh, a glance, a first embrace. We catch the moment before it passes and give it back every time you look.">ضحكة، نظرة، أول حضن… بنمسك اللحظة قبل ما تعدّي، ونرجّعهالك كل ما تبص للصورة.</p>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail">
+            <article class="card" data-cat="session" data-src="media/session-1.mp4"><video muted playsinline loop preload="none" poster="media/posters/session-1.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="حكاية بتكبر" data-en="A story that grows">حكاية بتكبر</b><small data-ar="سيشن حمل" data-en="Maternity session">سيشن حمل</small></div></article>
+            <article class="card" data-cat="session" data-src="media/session-2.mp4"><video muted playsinline loop preload="none" poster="media/posters/session-2.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="حب يتصوّر" data-en="Love, framed">حب يتصوّر</b><small data-ar="سيشن كابلز" data-en="Couple session">سيشن كابلز</small></div></article>
+            <article class="card" data-cat="session" data-src="media/session-3.mp4"><video muted playsinline loop preload="none" poster="media/posters/session-3.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="أناقة تحت الضوء" data-en="Style under the light">أناقة تحت الضوء</b><small data-ar="سيشن فاشون – كواليس" data-en="Fashion session – BTS">سيشن فاشون – كواليس</small></div></article>
+            <article class="card" data-cat="session" data-src="media/session-4.mp4"><video muted playsinline loop preload="none" poster="media/posters/session-4.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="أول حضن" data-en="The first embrace">أول حضن</b><small data-ar="سيشن نيوبورن" data-en="Newborn session">سيشن نيوبورن</small></div></article>
+          </div>
+          <div class="rail-btns"><button type="button" data-dir="-1" aria-label="Previous">‹</button><button type="button" data-dir="1" aria-label="Next">›</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Story band -->
+    <section class="story wrap rv">
+      <p data-ar="إحنا مش بنصوّر فيديو. <span>إحنا بنحكي</span> <mark>قصتك</mark> <span>بالطريقة اللي تستاهلها.</span>" data-en="We don't just shoot video. <span>We tell</span> <mark>your story</mark> <span>the way it deserves.</span>">إحنا مش بنصوّر فيديو. <span>إحنا بنحكي</span> <mark>قصتك</mark> <span>بالطريقة اللي تستاهلها.</span></p>
+    </section>
+
+    <!-- ========== Locations ========== -->
+    <section class="cat" id="location">
+      <div class="wrap">
+        <div class="cat-head rv">
+          <span class="eyebrow" data-ar="لوكيشن" data-en="Locations">لوكيشن</span>
+          <h2 data-ar="مكان جاهز لكل حكاية." data-en="A set ready for every story.">مكان جاهز لكل حكاية.</h2>
+          <p class="lead" data-ar="من المطبخ لركن البودكاست، كل زاوية في راكور معمولة عشان تبان حلوة قدام الكاميرا. دي صور من الكورنرات الجاهزة للريلز… اختار الركن، والباقي علينا." data-en="From the kitchen to the podcast corner, every angle at Rakour is built to look good on camera. These are our reel-ready corners: pick one and we'll take care of the rest.">من المطبخ لركن البودكاست، كل زاوية في راكور معمولة عشان تبان حلوة قدام الكاميرا. دي صور من الكورنرات الجاهزة للريلز… اختار الركن، والباقي علينا.</p>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail">
+            <article class="card" data-cat="location" data-src="media/location-1.mp4"><video muted playsinline loop preload="none" poster="media/posters/location-1.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="من هنا بتبدأ الحكاية" data-en="Where every story begins">من هنا بتبدأ الحكاية</b><small data-ar="مدخل الاستوديو" data-en="Studio entrance">مدخل الاستوديو</small></div></article>
+            <article class="card" data-cat="location" data-src="media/location-2.mp4"><video muted playsinline loop preload="none" poster="media/posters/location-2.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="مطبخ جاهز للكاميرا" data-en="A kitchen made for camera">مطبخ جاهز للكاميرا</b><small data-ar="لوكيشن المطبخ" data-en="Kitchen set">لوكيشن المطبخ</small></div></article>
+            <article class="card" data-cat="location" data-src="media/location-3.mp4"><video muted playsinline loop preload="none" poster="media/posters/location-3.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="ركن الكلام الحلو" data-en="Where good talks happen">ركن الكلام الحلو</b><small data-ar="ستوديو البودكاست" data-en="Podcast set">ستوديو البودكاست</small></div></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-01.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-02.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-03.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-04.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-05.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-06.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-07.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-08.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-09.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card portrait" data-cat="location"><img src="media/locations/location-photo-10.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card wide" data-cat="location"><img src="media/locations/location-photo-11.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card wide" data-cat="location"><img src="media/locations/location-photo-12.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card wide" data-cat="location"><img src="media/locations/location-photo-13.jpg" alt="Rakour Studio set" loading="lazy"></article>
+            <article class="card wide" data-cat="location"><img src="media/locations/location-photo-14.jpg" alt="Rakour Studio set" loading="lazy"></article>
+          </div>
+          <div class="rail-btns"><button type="button" data-dir="-1" aria-label="Previous">‹</button><button type="button" data-dir="1" aria-label="Next">›</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Podcast ========== -->
+    <section class="cat" id="podcast">
+      <div class="wrap">
+        <div class="cat-head rv">
+          <span class="eyebrow" data-ar="بودكاست" data-en="Podcast">بودكاست</span>
+          <h2 data-ar="صوتك يستاهل صورة." data-en="Your voice deserves a picture.">صوتك يستاهل صورة.</h2>
+          <p class="lead" data-ar="مايكات، إضاءة، وكاميرات متعددة… إنت اتكلم، والباقي علينا." data-en="Mics, lighting and multi-camera. You talk, we handle the rest.">مايكات، إضاءة، وكاميرات متعددة… إنت اتكلم، والباقي علينا.</p>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail">
+            <article class="card" data-cat="podcast"><img src="media/podcast/podcast-photo-01.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+            <article class="card" data-cat="podcast"><img src="media/podcast/podcast-photo-02.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+            <article class="card" data-cat="podcast"><img src="media/podcast/podcast-photo-03.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+            <article class="card" data-cat="podcast"><img src="media/podcast/podcast-photo-04.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+            <article class="card" data-cat="podcast"><img src="media/podcast/podcast-photo-05.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+            <article class="card wide" data-cat="podcast"><img src="media/podcast/podcast-photo-06.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+            <article class="card wide" data-cat="podcast"><img src="media/podcast/podcast-photo-07.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+            <article class="card wide" data-cat="podcast"><img src="media/podcast/podcast-photo-08.jpg" alt="Rakour Studio podcast set" loading="lazy"></article>
+          </div>
+          <div class="rail-btns"><button type="button" data-dir="-1" aria-label="Previous">‹</button><button type="button" data-dir="1" aria-label="Next">›</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Drama ========== -->
+    <section class="cat" id="drama">
+      <div class="wrap">
+        <div class="cat-head rv">
+          <span class="eyebrow" data-ar="دراما" data-en="Drama">دراما</span>
+          <h2 data-ar="مشاهد بتتحس قبل ما تتشاف." data-en="Scenes you feel before you see.">مشاهد بتتحس قبل ما تتشاف.</h2>
+          <p class="lead" data-ar="ضوء، كادر، وصمت في مكانه الصح. بنبني المشهد لحد ما يصدّقه اللي بيتفرج." data-en="Light, framing and silence in the right place. We build each scene until the audience believes it.">ضوء، كادر، وصمت في مكانه الصح. بنبني المشهد لحد ما يصدّقه اللي بيتفرج.</p>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail">
+            <article class="card wide" data-cat="drama" data-src="media/drama-1.mp4"><video muted playsinline loop preload="none" poster="media/posters/drama-1.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="تفاصيل بتصنع شخصية" data-en="Details that build a character">تفاصيل بتصنع شخصية</b></div></article>
+            <article class="card wide" data-cat="drama" data-src="media/drama-2.mp4"><video muted playsinline loop preload="none" poster="media/posters/drama-2.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="حكاية بتتبني من الصفر" data-en="A story built from the ground up">حكاية بتتبني من الصفر</b></div></article>
+            <article class="card wide" data-cat="drama" data-src="media/drama-3.mp4"><video muted playsinline loop preload="none" poster="media/posters/drama-3.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="كلمة بتلمس القلب" data-en="Words that touch the heart">كلمة بتلمس القلب</b></div></article>
+            <article class="card wide" data-cat="drama" data-src="media/drama-4.mp4"><video muted playsinline loop preload="none" poster="media/posters/drama-4.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="لحظة بتجمع الناس" data-en="A moment that brings people together">لحظة بتجمع الناس</b></div></article>
+            <!-- Room for one more drama video: copy a card above and change data-src / poster -->
+          </div>
+          <div class="rail-btns"><button type="button" data-dir="-1" aria-label="Previous">‹</button><button type="button" data-dir="1" aria-label="Next">›</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Products ========== -->
+    <section class="cat" id="products">
+      <div class="wrap">
+        <div class="cat-head rv">
+          <span class="eyebrow" data-ar="منتجات" data-en="Products">منتجات</span>
+          <h2 data-ar="منتجك هو البطل." data-en="Your product is the hero.">منتجك هو البطل.</h2>
+          <p class="lead" data-ar="إضاءة مدروسة وألوان بتبيع. بنخلّي منتجك يتشاف بالشكل اللي يخلّي الناس عايزاه." data-en="Considered light and colour that sells. We show your product the way that makes people want it.">إضاءة مدروسة وألوان بتبيع. بنخلّي منتجك يتشاف بالشكل اللي يخلّي الناس عايزاه.</p>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail">
+            <article class="card" data-cat="products"><img src="media/products/product-1.jpg" alt="" loading="lazy">
+              <div class="cap"><b data-ar="كل تفصيلة بتتكلم" data-en="Every detail speaks">كل تفصيلة بتتكلم</b></div></article>
+            <article class="card" data-cat="products"><img src="media/products/product-2.jpg" alt="" loading="lazy">
+              <div class="cap"><b data-ar="حنين بيبيع" data-en="Nostalgia that sells">حنين بيبيع</b></div></article>
+            <article class="card" data-cat="products"><img src="media/products/product-3.jpg" alt="" loading="lazy">
+              <div class="cap"><b data-ar="نعومة في كادر" data-en="Softness in frame">نعومة في كادر</b></div></article>
+            <article class="card" data-cat="products"><img src="media/products/product-4.jpg" alt="" loading="lazy">
+              <div class="cap"><b data-ar="ستايل بيتشاف" data-en="Style you can see">ستايل بيتشاف</b></div></article>
+          </div>
+          <div class="rail-btns"><button type="button" data-dir="-1" aria-label="Previous">‹</button><button type="button" data-dir="1" aria-label="Next">›</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Editing ========== -->
+    <section class="cat" id="montage">
+      <div class="wrap">
+        <div class="cat-head rv">
+          <span class="eyebrow" data-ar="مونتاج" data-en="Editing">مونتاج</span>
+          <h2 data-ar="الحكاية بتكمل في المونتاج." data-en="The story is finished in the edit.">الحكاية بتكمل في المونتاج.</h2>
+          <p class="lead" data-ar="قص، ألوان، صوت وموشن… شوف الفرق بين اللقطة الخام والنسخة النهائية." data-en="Cuts, colour, sound and motion. See the difference between the raw shot and the final cut.">قص، ألوان، صوت وموشن… شوف الفرق بين اللقطة الخام والنسخة النهائية.</p>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail">
+            <article class="card" data-cat="montage" data-src="media/montage-1.mp4"><video muted playsinline loop preload="none" poster="media/posters/montage-1.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="قبل وبعد" data-en="Before &amp; after">قبل وبعد</b><small data-ar="الفرق في القص" data-en="The difference is the cut">الفرق في القص</small></div></article>
+            <article class="card" data-cat="montage" data-src="media/montage-2.mp4"><video muted playsinline loop preload="none" poster="media/posters/montage-2.jpg"></video><span class="badge"></span>
+              <div class="cap"><b data-ar="اللقطة بتتولد هنا" data-en="Born in the edit">اللقطة بتتولد هنا</b><small data-ar="قبل وبعد" data-en="Before &amp; after">قبل وبعد</small></div></article>
+          </div>
+          <div class="rail-btns"><button type="button" data-dir="-1" aria-label="Previous">‹</button><button type="button" data-dir="1" aria-label="Next">›</button></div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ========== Contact ========== -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-card rv">
+        <img class="mark" src="icon.png" alt="">
+        <h2 data-ar="عندك حكاية؟ يلا نصوّرها." data-en="Got a story? Let's shoot it.">عندك حكاية؟ يلا نصوّرها.</h2>
+        <p data-ar="ابعتلنا فكرتك، وإحنا نرجعلك بخطة تصوير وسعر خلال يوم." data-en="Send us your idea and we'll get back to you with a shoot plan and a quote within a day.">ابعتلنا فكرتك، وإحنا نرجعلك بخطة تصوير وسعر خلال يوم.</p>
+        <div class="btns">
+          <a class="btn btn-yellow" href="https://wa.me/201551227048?text=%D8%A3%D9%87%D9%84%D8%A7%D9%8B%20%D8%B1%D8%A7%D9%83%D9%88%D8%B1%20%D8%B3%D8%AA%D9%88%D8%AF%D9%8A%D9%88%D8%8C%20%D8%AD%D8%A7%D8%A8%D8%A8%20%D8%A3%D8%AD%D8%AC%D8%B2%20%D8%AC%D9%84%D8%B3%D8%A9%20%D8%AA%D8%B5%D9%88%D9%8A%D8%B1" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.15c-.24.69-1.42 1.32-1.96 1.37-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.66-.61-2.92-1.26-4.82-4.2-4.97-4.4-.15-.19-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.26-.29.57-.36.77-.36h.55c.18 0 .42-.07.65.5.24.58.82 2.01.89 2.15.07.15.12.32.02.51-.1.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.15-.3.3-.13.6.17.29.76 1.26 1.64 2.04 1.13 1.01 2.08 1.32 2.37 1.47.29.15.46.12.63-.07.17-.2.73-.85.92-1.14.19-.29.39-.24.65-.15.27.1 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.69-.17 1.38Z"/></svg>
+            <span data-ar="كلّمنا واتساب" data-en="Chat on WhatsApp">كلّمنا واتساب</span>
+          </a>
+          <a class="btn btn-glass" href="mailto:rakourstudio.26@gmail.com?subject=%D8%AD%D8%AC%D8%B2%20%D8%AA%D8%B5%D9%88%D9%8A%D8%B1%20-%20Rakour%20Studio">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm.8 2v.3l8.2 5.4 8.2-5.4V7H3.8Zm16.4 2.7-7.65 5.03a1 1 0 0 1-1.1 0L3.8 9.7V17h16.4V9.7Z"/></svg>
+            <span data-ar="ابعتلنا إيميل" data-en="Send an email">ابعتلنا إيميل</span>
+          </a>
+        </div>
+        <div class="contact-info">
+          <a href="https://wa.me/201551227048" target="_blank" rel="noopener" dir="ltr">+20 155 122 7048</a>
+          <a href="mailto:rakourstudio.26@gmail.com" dir="ltr">rakourstudio.26@gmail.com</a>
+          <span data-ar="الإسكندرية، مصر" data-en="Alexandria, Egypt">الإسكندرية، مصر</span>
+        </div>
+        <div class="social">
+          <a href="https://www.instagram.com/rakour_studio" target="_blank" rel="noopener" aria-label="Instagram" data-social="instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4ZM12 2c-2.7 0-3.1 0-4.1.06-1.07.05-1.8.22-2.43.47a4.9 4.9 0 0 0-1.77 1.15A4.9 4.9 0 0 0 2.53 5.45c-.25.64-.42 1.36-.47 2.43C2 8.9 2 9.3 2 12s0 3.1.06 4.12c.05 1.06.22 1.79.47 2.43.25.66.6 1.22 1.15 1.77.55.56 1.11.9 1.77 1.15.64.25 1.36.42 2.43.47C8.9 22 9.3 22 12 22s3.1 0 4.12-.06c1.06-.05 1.79-.22 2.43-.47a4.9 4.9 0 0 0 1.77-1.15c.56-.55.9-1.11 1.15-1.77.25-.64.42-1.37.47-2.43C22 15.1 22 14.7 22 12s0-3.1-.06-4.12c-.05-1.07-.22-1.79-.47-2.43a4.9 4.9 0 0 0-1.15-1.77 4.9 4.9 0 0 0-1.77-1.15c-.64-.25-1.37-.42-2.43-.47C15.1 2 14.7 2 12 2Zm0 1.8c2.67 0 2.99 0 4.04.06.97.04 1.5.2 1.86.34.47.18.8.4 1.15.75.35.35.57.68.75 1.15.14.35.3.88.34 1.86.05 1.05.06 1.37.06 4.04s0 2.99-.06 4.04c-.04.97-.2 1.5-.34 1.86-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.35.14-.89.3-1.86.34-1.05.05-1.37.06-4.04.06s-2.99 0-4.04-.06c-.97-.04-1.5-.2-1.86-.34a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.14-.35-.3-.89-.34-1.86C3.81 14.99 3.8 14.67 3.8 12s0-2.99.06-4.04c.04-.97.2-1.5.34-1.86.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.35-.14.89-.3 1.86-.34C9.01 3.81 9.33 3.8 12 3.8Z"/></svg></a>
+          <a href="https://www.facebook.com/share/1Ek9L7oJoi/" target="_blank" rel="noopener" aria-label="Facebook" data-social="facebook"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8.2h2.75l.41-3.2H13.5V8.56c0-.93.26-1.56 1.59-1.56h1.7V4.14A22.6 22.6 0 0 0 14.3 4c-2.45 0-4.13 1.5-4.13 4.24v2.36H7.4v3.2h2.77V22h3.33Z"/></svg></a>
+          <a href="https://www.tiktok.com/@rakourstudio" target="_blank" rel="noopener" aria-label="TikTok" data-social="tiktok"><svg viewBox="0 0 24 24"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.6 2.6 0 0 1-2.6-2.6 2.6 2.6 0 0 1 3.37-2.48V9.66a5.69 5.69 0 0 0-6.46 5.64A5.69 5.69 0 0 0 9.86 21a5.69 5.69 0 0 0 5.69-5.69V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.25-1.48Z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span data-ar="© راكور ستوديو – كل صورة حكاية" data-en="© Rakour Studio – Every frame tells a story">© راكور ستوديو – كل صورة حكاية</span>
+  <small class="credit">Music: “Filaments” by Scott Buckley – <a href="https://www.scottbuckley.com.au" target="_blank" rel="noopener">scottbuckley.com.au</a> (CC BY 4.0)</small>
+</footer>
+
+<!-- Background music: 'Filaments' by Scott Buckley (CC BY 4.0). Put the MP3 at media/music.mp3 -->
+<audio id="bg-music" src="media/music.mp3" loop preload="auto"></audio>
+<button class="music-btn" id="music-btn" type="button" aria-label="Music on/off" aria-pressed="false" hidden>
+  <svg class="on" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 4V6L7 10H3Zm13.5 2A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4ZM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6Z"/></svg>
+  <svg class="off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 4V6L7 10H3Zm13.6 2 2.7-2.7-1.4-1.4-2.7 2.7-2.7-2.7-1.4 1.4 2.7 2.7-2.7 2.7 1.4 1.4 2.7-2.7 2.7 2.7 1.4-1.4-2.7-2.7Z"/></svg>
+</button>
+
+<a class="fab" href="https://wa.me/201551227048" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91A9.86 9.86 0 0 0 12.04 2Zm5.8 14.15c-.24.69-1.42 1.32-1.96 1.37-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.66-.61-2.92-1.26-4.82-4.2-4.97-4.4-.15-.19-1.18-1.57-1.18-3s.75-2.13 1.02-2.42c.26-.29.57-.36.77-.36h.55c.18 0 .42-.07.65.5.24.58.82 2.01.89 2.15.07.15.12.32.02.51-.1.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.15-.3.3-.13.6.17.29.76 1.26 1.64 2.04 1.13 1.01 2.08 1.32 2.37 1.47.29.15.46.12.63-.07.17-.2.73-.85.92-1.14.19-.29.39-.24.65-.15.27.1 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.69-.17 1.38Z"/></svg>
+</a>
+
+<script>
+(function () {
+  var html = document.documentElement;
+
+  // ---- Language toggle (Arabic default) ----
+  var langBtn = document.getElementById('lang-btn');
+  function setLang(lang) {
+    html.lang = lang;
+    html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-ar][data-en]').forEach(function (el) {
+      el.innerHTML = el.getAttribute('data-' + lang);
+    });
+    langBtn.textContent = lang === 'ar' ? 'EN' : 'عربي';
+    document.querySelectorAll('.rail').forEach(function (r) { r.scrollLeft = 0; });
+  }
+  langBtn.addEventListener('click', function () { setLang(html.lang === 'ar' ? 'en' : 'ar'); });
+
+  // ---- Scroll reveal ----
+  var rv = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.rv').forEach(function (el) { rv.observe(el); });
+
+  // ---- Videos: hover to play on desktop, play when visible on mobile ----
+  var cards = Array.prototype.slice.call(document.querySelectorAll('#feed .card[data-src]'));
+  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  function load(card) {
+    var v = card.querySelector('video');
+    if (!v.getAttribute('src')) {
+      v.muted = true; v.playsInline = true;
+      v.setAttribute('src', card.dataset.src);
+      v.preload = 'auto';
+      v.load();
+    }
+    return v;
+  }
+  function play(card) {
+    var v = load(card);
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+    card.classList.add('playing');
+  }
+  function stop(card) {
+    var v = card.querySelector('video');
+    if (v.getAttribute('src')) v.pause();
+    card.classList.remove('playing');
+  }
+
+  // Start downloading each video shortly before it scrolls into view
+  var loader = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { load(e.target); loader.unobserve(e.target); } });
+  }, { rootMargin: '400px' });
+  cards.forEach(function (c) { loader.observe(c); });
+
+  if (canHover) {
+    cards.forEach(function (c) {
+      c.addEventListener('mouseenter', function () { play(c); });
+      c.addEventListener('mouseleave', function () { stop(c); });
+    });
+  } else {
+    var viewer = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio >= 0.6) play(e.target); else stop(e.target);
+      });
+    }, { threshold: [0, 0.6] });
+    cards.forEach(function (c) { viewer.observe(c); });
+  }
+
+  // ---- Gallery arrows ----
+  document.querySelectorAll('.rail-wrap').forEach(function (w) {
+    var rail = w.querySelector('.rail');
+    w.querySelectorAll('.rail-btns button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var dir = +b.dataset.dir * (html.dir === 'rtl' ? -1 : 1);
+        rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: 'smooth' });
+      });
+    });
+  });
+
+  // ---- Background music: browsers only allow sound after the visitor's first tap/click/key ----
+  var music = document.getElementById('bg-music');
+  var musicBtn = document.getElementById('music-btn');
+  var musicWanted = true;
+  function setMusicUI(on) { musicBtn.classList.toggle('playing', on); musicBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  function startMusic() {
+    if (!musicWanted) return;
+    music.volume = 0.35;
+    var p = music.play();
+    if (p && p.then) p.then(function () { setMusicUI(true); }).catch(function () {});
+  }
+  music.addEventListener('canplay', function () { musicBtn.hidden = false; }, { once: true });
+  music.addEventListener('error', function () { musicBtn.hidden = true; });
+  ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+    window.addEventListener(ev, function first(e) {
+      if (e.target.closest && e.target.closest('#music-btn')) return;
+      startMusic();
+      window.removeEventListener(ev, first);
+    }, { passive: true });
+  });
+  startMusic();
+  musicBtn.addEventListener('click', function () {
+    if (music.paused) { musicWanted = true; startMusic(); }
+    else { musicWanted = false; music.pause(); setMusicUI(false); }
+  });
+
+  // ---- Highlight the current section chip ----
+  var chips = Array.prototype.slice.call(document.querySelectorAll('#chips a'));
+  var spy = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      chips.forEach(function (a) {
+        var on = a.getAttribute('href') === '#' + e.target.id;
+        a.classList.toggle('active', on);
+        if (on && a.scrollIntoView) a.parentNode.scrollTo({ left: a.offsetLeft - 16, behavior: 'smooth' });
+      });
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('.cat').forEach(function (s) { spy.observe(s); });
+})();
+</script>
+</body>
+</html>
